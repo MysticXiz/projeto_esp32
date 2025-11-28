@@ -18,8 +18,15 @@ class Registro(BaseModel):
     tempoLigado: int          # em segundos
 
 def carregar_registros():
+    if not os.path.exists(ARQUIVO):
+        return []
+
     with open(ARQUIVO, "r") as f:
-        return json.load(f)
+        content = f.read().strip()
+        if not content:  # arquivo está vazio
+            return []
+        return json.loads(content)
+
 
 def salvar_registros(registros):
     with open(ARQUIVO, "w") as f:
